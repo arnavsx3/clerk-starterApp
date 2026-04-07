@@ -23,8 +23,8 @@ export default function DashboardPage() {
     if (user) {
       const getUser = async () => {
         const { data } = await axios.get("/api/get-user");
-        setUserData(data);
-        setNewUsername(data.username ?? "");
+        setUserData(data.user);
+        setNewUsername(data.user.username ?? "");
       };
       getUser();
     }
@@ -32,11 +32,12 @@ export default function DashboardPage() {
 
   const handleSave = async () => {
     setLoading(true);
-    const { data: updated } = await axios.post("/api/update-username", {
+    const { data } = await axios.post("/api/update-username", {
       username: newUsername,
     });
+    const updatedUser = data.user
     setUserData((prev) =>
-      prev ? { ...prev, username: updated.username } : prev,
+      prev ? { ...prev, username: updatedUser.username } : prev,
     );
     setEditing(false);
     setLoading(false);

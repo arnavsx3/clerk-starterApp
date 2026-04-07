@@ -1,65 +1,98 @@
-import Image from "next/image";
+"use client"
+
+import Link from "next/link";
+import { SignInButton, SignUpButton, Show } from "@clerk/nextjs";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen bg-[#0a0f1e] text-white font-sans">
+      {/* Navbar */}
+      <nav className="flex items-center justify-between px-8 py-5 border-b border-white/10">
+        <span className="text-amber-400 font-bold text-xl tracking-tight">
+          ClerkStarter
+        </span>
+        <div className="flex items-center gap-4">
+          <Show when="signed-out">
+            <SignInButton>
+              <button className="text-sm text-white/70 hover:text-white transition">
+                Sign In
+              </button>
+            </SignInButton>
+            <SignUpButton>
+              <button className="text-sm bg-amber-400 hover:bg-amber-300 text-black font-semibold px-4 py-2 rounded-lg transition">
+                Get Started
+              </button>
+            </SignUpButton>
+          </Show>
+          <Show when="signed-in">
+            <Link
+              href="/dashboard"
+              className="text-sm bg-amber-400 hover:bg-amber-300 text-black font-semibold px-4 py-2 rounded-lg transition">
+              Dashboard
+            </Link>
+          </Show>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </nav>
+
+      {/* Hero */}
+      <section className="flex flex-col items-center justify-center text-center px-6 py-32 gap-6">
+        <div className="inline-block bg-amber-400/10 border border-amber-400/30 text-amber-400 text-xs font-semibold px-4 py-1.5 rounded-full tracking-widest uppercase mb-2">
+          Next.js + Clerk + Neon
         </div>
-      </main>
-    </div>
+        <h1 className="text-5xl sm:text-6xl font-extrabold leading-tight max-w-3xl tracking-tight">
+          Auth that just <span className="text-amber-400">works.</span>
+        </h1>
+        <p className="text-white/50 text-lg max-w-xl">
+          A minimal starter with Clerk authentication, Neon database, and
+          Drizzle ORM. Sign up and your account syncs automatically.
+        </p>
+        <div className="flex gap-4 mt-4">
+          <Show when="signed-out">
+            <SignUpButton>
+              <button className="bg-amber-400 hover:bg-amber-300 text-black font-bold px-6 py-3 rounded-xl transition text-sm">
+                Create Account
+              </button>
+            </SignUpButton>
+            <SignInButton>
+              <button className="border border-white/20 hover:border-white/40 text-white/70 hover:text-white px-6 py-3 rounded-xl transition text-sm">
+                Sign In
+              </button>
+            </SignInButton>
+          </Show>
+          <Show when="signed-in">
+            <Link
+              href="/dashboard"
+              className="bg-amber-400 hover:bg-amber-300 text-black font-bold px-6 py-3 rounded-xl transition text-sm">
+              Go to Dashboard →
+            </Link>
+          </Show>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto px-6 pb-32">
+        {[
+          {
+            title: "Clerk Auth",
+            desc: "Sign up, sign in, and user management out of the box.",
+          },
+          {
+            title: "Neon + Drizzle",
+            desc: "Serverless Postgres with a type-safe ORM.",
+          },
+          {
+            title: "Webhook Sync",
+            desc: "Users auto-synced to your database on registration.",
+          },
+        ].map((f) => (
+          <div
+            key={f.title}
+            className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-amber-400/30 transition">
+            <h3 className="text-amber-400 font-semibold mb-2">{f.title}</h3>
+            <p className="text-white/50 text-sm">{f.desc}</p>
+          </div>
+        ))}
+      </section>
+    </main>
   );
 }
